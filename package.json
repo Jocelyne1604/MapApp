@@ -8,17 +8,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cain310/Mid-Term.git"
+    "url": "git+https://github.com/Cain310/midTermProject"
   },
   "author": "Michael Cain, Jaffar Shah, Jocelyne El Tahan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Cain310/Mid-Term/issues"
+    "url": "https://github.com/Cain310/midTermProject"
   },
-  "homepage": "https://github.com/Cain310/Mid-Term#readme",
+  "homepage": "https://github.com/Cain310/midTermProject#readme",
   "dependencies": {
     "cookie-session": "^1.3.3",
     "ejs": "^2.6.1",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "nodemon": "^1.18.11"
   }
 }
