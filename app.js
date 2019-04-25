@@ -18,11 +18,11 @@ app.use(
 );
 
 //Helper Functions
-function validUser(user) {
-  const validEmail = typeof user.email == 'string' && user.email.trim() != '';
-  const validPassword = typeof user.password == 'string' &&
-    user.password.trim() != '' &&
-    user.password.trim().length >= 6;
+function validUser(email, password) {
+  const validEmail = typeof email == 'string' && email.trim() != '';
+  const validPassword = typeof password == 'string' &&
+    password.trim() != '' &&
+    password.trim().length >= 6;
 
   return validEmail && validPassword;
 }
@@ -89,10 +89,10 @@ app.post("/users", (req, res) => {
 // });
 
 // //Logout button application, redirects to login and deletes session encrypted cookie.
-// app.post("/logout", (req, res) => {
-//   req.session = null;
-//   res.redirect("/");
-// });
+app.post("/logout", (req, res) => {
+  req.session = null;
+  res.redirect("/");
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
