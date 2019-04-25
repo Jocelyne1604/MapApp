@@ -3,11 +3,19 @@ var app = express();
 var PORT = 8080; // default port 8080
 var auth = require('./auth/index')
 var cookieSession = require('cookie-session')
+var bodyParser = require('body-parser')
 
-app.use(cookieSession({
-  name: 'session',
-  keys: ['key1', 'key2']
-}))
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["mappapp"],
+
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  })
+);
 
 //Helper Functions
 function validUser(user) {
@@ -33,13 +41,14 @@ function generateRandomString() {
 //All GET routes here
 app.get("/", (req, res) => {
   res.render("index.ejs");
+  console.log('cookie: ', req.cookies)
 });
 
 //register page users who are not already registered can register.
 //changes routes names from /register
 app.get("/users/new", (req, res) => {
   let templateVars = { users: users[req.session["userId"]], showLogin: false };
-  res.render("urls_register", templateVars);
+  res.render("index.ejs", templateVars);
 });
 
 app.post("/users", (req, res) => {
@@ -53,7 +62,7 @@ app.post("/users", (req, res) => {
 
   if (validUser(email, password)) {
     // users[randomID] = newUser;
-    req.session.userId = randomID;
+    // req.session.userId = randomID;
     res.redirect("/");
   } else if (!email || !password) {
     res.send("UH OH Please try Again!");
