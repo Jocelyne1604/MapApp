@@ -1,10 +1,12 @@
 var express = require("express");
+const bcrypt = require('bcrypt');
 var app = express();
 var PORT = 8080; // default port 8080
 var auth = require('./auth/index')
 var cookieSession = require('cookie-session')
 var bodyParser = require('body-parser')
-
+const User = require('./routes/users.js')
+// User.getOneByEmail("jeff@canada.ca").then(user => console.log('user', user));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
@@ -52,24 +54,32 @@ app.get("/users/new", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-  const randomID = generateRandomString();
-  const { email, password } = req.body;
-  // const newUser = {
-  //   id: randomID,
-  //   email,
-  //   password: hashedPassword
-  // };
+  // const randomID = generateRandomString();
+  let { email, password } = req.body;
 
   if (validUser(email, password)) {
-    // users[randomID] = newUser;
-    // req.session.userId = randomID;
-    res.redirect("/");
-  } else if (!email || !password) {
-    res.send("UH OH Please try Again!");
-  } else {
-    res.status(400).send("You are already a registered user");
+    User.getOneByEmail(email).then(user => {
+      console.log('user', user);
+      if (!user) {
+
+        const user = {
+          email: email,
+          password: bcrypt.hashSync(password, 8),
+          created_at: new Date()
+        };
+        // Store hash in your password DB.
+        User.create(user).then(id => {
+          res.redirect("/");
+        });
+        // users[randomID] = newUser;
+        // req.session.userId = randomID;
+
+      } else {
+        res.status(400).send("You are already a registered user");
+      }
+    })
   }
-});
+})
 
 // //Login page where only registered users can login
 // app.get("/login", (req, res) => {
@@ -78,15 +88,22 @@ app.post("/users", (req, res) => {
 // });
 
 // //Login page retrieve users who have already registered using the helper function up top. Error messages if not already registered.
-// app.post("/login", (req, res) => {
+app.post("/login", (req, res) => {
+  let { email, password } = req.body;
+  if (validUser(email, password)) {
+    User.getOneByEmail(email).then(user => {
+      console.log('user', user);
+      console.log('YAYYY');
+
+    })
+  } else {
+    res.status(400).send("THOU shalt not pass invalid login");
+  }
+});
 //   const user = retrieveUser(req.body.email, req.body.password);
 //   if (user) {
 //     req.session.userId = user.id;
 //     res.redirect("/urls");
-//   } else {
-//     res.status(400).send("THOU shalt not pass");
-//   }
-// });
 
 // //Logout button application, redirects to login and deletes session encrypted cookie.
 app.post("/logout", (req, res) => {
