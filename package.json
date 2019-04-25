@@ -1,0 +1,24 @@
+{
+  "name": "mid-term",
+  "version": "1.0.0",
+  "description": "A web app that allows users to collaboratively create maps which list multiple \"points\", for example: \"Best Places to Eat Around Town\" or \"Locations of Movie Scenes\".",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cain310/Mid-Term.git"
+  },
+  "author": "Michael Cain, Jaffar Shah, Jocelyne El Tahan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cain310/Mid-Term/issues"
+  },
+  "homepage": "https://github.com/Cain310/Mid-Term#readme",
+  "dependencies": {
+    "cookie-session": "^1.3.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  }
+}
