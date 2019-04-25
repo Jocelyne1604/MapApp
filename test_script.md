@@ -26,5 +26,7 @@ Notes
   - 
 
 
-toDO
-  - 
+toDO-Mentor
+
+  - help fix auto nodemon update
+  -  
