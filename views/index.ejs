@@ -59,6 +59,12 @@
             document.getElementById("googleMap"),
             mapProp
           );
+          var myLatLng = {lat: 43.6, lng: -79.4};
+          var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Hello World!'
+          });
         }
       </script>
     </div>
