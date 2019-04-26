@@ -1,6 +1,9 @@
-exports.in = function (knex, Promise) {
+exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
-  return knex('users').del()
+  return knex('users_maps').del()
+    .then(() => knex('places').del())
+    .then(() => knex('maps').del())
+    .then(() => knex('users').del())
     .then(function () {
       // Inserts seed entries
       return knex('users').insert([ //users
@@ -22,18 +25,27 @@ exports.in = function (knex, Promise) {
             id: 1,
             user_id: 1,
             name: 'Jeff',
+            zoom: 1,
+            lat: 42.5,
+            lng: 79.5,
           },
         ]);
       }).then(function () {
         return knex('places').insert([ //places
           {
-            id: 1,
-            name: 'Jeff',
             description: 'niceplace',
             map_id: 1,
             user_id: 1,
             lat: 0.5,
             lng: 0.8,
+
+          },
+          {
+            description: 'otherplace',
+            map_id: 1,
+            user_id: 1,
+            lat: 1.5,
+            lng: 10.8,
 
           },
         ]);
