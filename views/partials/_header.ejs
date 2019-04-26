@@ -1,3 +1,7 @@
+  <link rel="stylesheet" href="/styles/headerstyle.css" type="css" />
+
+
+
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" href="#">
     <img src="http://icons.iconarchive.com/icons/dtafalonso/modern-xp/256/ModernXP-73-Globe-icon.png" width="30"
@@ -5,35 +9,40 @@
     Map App
   </a>
 
-   
+
 
 <% if (!user) {%> 
-  <a href="#" onClick="unhideReg()">Register</a>  
+
+  <a id="show_login" href="#" onClick="unhideReg()">Register</a>  
     <form method="POST" action="<%=`/users`%>">
       <input class="form-control" id="register" type="email" name="email" placeholder="enter email here"
         style="display:none" />
       <input class="form-control" id="register2" type="password" name="password" placeholder="Enter password here"
         style="display:none" />
-      <input type="submit" value="Register" id="register3" style="display:none" />
+      <input type="submit" class="btn btn-primary" value="Register" id="register3" style="display:none" />
     </form>
 
   <a> | </a>
-    <a href="#" onClick="unhideLog()">Login</a>
+
+    <a class-="loginlink" href="#" onClick="unhideLog()">Login</a>
       <form method="POST" action="<%=`/login`%>">
         <input class="form-control" id="login" type="email" name="email" placeholder="enter email here"
         style="display:none" />
        <input class="form-control" id="login2" type="password" name="password" placeholder="Enter password here"
         style="display:none" />
-       <input type="submit" value="Login" id="login3" style="display:none" />
+       <input type="submit" class="btn btn-primary" value="Login" id="login3" style="display:none" />
       </form>
   
 <% } else { %>
-  <p>Hello TEST</p>
+  <p>Hello <%=user.email %></p>
   <form method="POST" action="<%=`/logout`%>">
     <button class="btn btn-primary" type="submit" value="logout" action="/logout">Log out</button>
   </form>
 
 <% }; %>
+
+
+
 
 </nav>
 
