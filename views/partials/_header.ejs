@@ -1,32 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="http://icons.iconarchive.com/icons/dtafalonso/modern-xp/256/ModernXP-73-Globe-icon.png" width="30"
+        height="30" class="d-inline-block align-top" alt="">
+    Map App
+  </a>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  <title>TinyApp</title>
+<% if (!user) {%> 
+  <a href="#" onClick="unhideReg()">Register</a>  
+    <form method="POST" action="<%=`/users`%>">
+      <input class="form-control" id="register" type="email" name="email" placeholder="enter email here"
+        style="display:none" />
+      <input class="form-control" id="register2" type="password" name="password" placeholder="Enter password here"
+        style="display:none" />
+      <input type="submit" value="Register" id="register3" style="display:none" />
+    </form>
 
-</head>
-
-<body style="font-size:20px; padding:50px;">
-
-  <h1>TinyApp</h1>
-
-  <% if (!user ) {%>
-  <!--  <form method="POST" action="<%=`/login`%>">  -->
-  <a href="/register">Register</a>
   <a> | </a>
-  <a href="/login">Login</a>
-  <% } else { %>
-  <p>Hello <%= user.email %></p>
+    <a href="#" onClick="unhideLog()">Login</a>
+      <form method="POST" action="<%=`/login`%>">
+        <input class="form-control" id="login" type="email" name="email" placeholder="enter email here"
+        style="display:none" />
+       <input class="form-control" id="login2" type="password" name="password" placeholder="Enter password here"
+        style="display:none" />
+       <input type="submit" value="Login" id="login3" style="display:none" />
+      </form>
+  
+<% } else { %>
+  <p>Hello TEST</p>
   <form method="POST" action="<%=`/logout`%>">
     <button class="btn btn-primary" type="submit" value="logout" action="/logout">Log out</button>
   </form>
-  <% }; %>
-</body>
 
-</html>
+<% }; %>
+
+</nav>
+
+<script>
+
+  function unhideLog() {
+    document.getElementById('login').style.display = "block";
+    document.getElementById('login2').style.display = "block";
+    document.getElementById('login3').style.display = "block";
+  }
+  function unhideReg() {
+    document.getElementById('register').style.display = "block";
+    document.getElementById('register2').style.display = "block";
+    document.getElementById('register3').style.display = "block";
+    console.log("hello");
+  }
+
+  </script>
+
