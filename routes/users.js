@@ -15,7 +15,9 @@ module.exports = {
     return knex('users').insert(user, 'id').then(ids => {
       return ids[0];
     });
-  }
+  },
+  getMaps: function () {
+    return knex('maps').where(
 }
 
 
