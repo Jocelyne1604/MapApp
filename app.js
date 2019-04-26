@@ -1,13 +1,14 @@
 var express = require("express");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 var app = express();
 var PORT = 8080; // default port 8080
-var auth = require('./auth/index')
-var cookieSession = require('cookie-session')
-var bodyParser = require('body-parser')
-const User = require('./routes/users.js')
+var auth = require("./auth/index");
+var cookieSession = require("cookie-session");
+var bodyParser = require("body-parser");
+const User = require("./routes/users.js");
 // User.getOneByEmail("jeff@canada.ca").then(user => console.log('user', user));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 app.use(
   cookieSession({
@@ -21,9 +22,10 @@ app.use(
 
 //Helper Functions
 function validUser(email, password) {
-  const validEmail = typeof email == 'string' && email.trim() != '';
-  const validPassword = typeof password == 'string' &&
-    password.trim() != '' &&
+  const validEmail = typeof email == "string" && email.trim() != "";
+  const validPassword =
+    typeof password == "string" &&
+    password.trim() != "" &&
     password.trim().length >= 6;
 
   return validEmail && validPassword;
@@ -42,8 +44,17 @@ function generateRandomString() {
 
 //All GET routes here
 app.get("/", (req, res) => {
-  res.render("index.ejs");
-  console.log('cookie: ', req.cookies)
+  if (!req.session["user_email"]) {
+    let templateVars = { user: null };
+    res.render("index.ejs", templateVars);
+    console.log("cookie: ", req.session);
+  } else {
+    User.getOneByEmail(req.session["user_email"]).then(user => {
+      let templateVars = { user: user };
+      res.render("index.ejs", templateVars);
+      console.log("cookie: ", req.session);
+    });
+  }
 });
 
 //register page users who are not already registered can register.
@@ -59,9 +70,8 @@ app.post("/users", (req, res) => {
 
   if (validUser(email, password)) {
     User.getOneByEmail(email).then(user => {
-      console.log('user', user);
+      console.log("user", user);
       if (!user) {
-
         const user = {
           email: email,
           password: bcrypt.hashSync(password, 8),
@@ -69,31 +79,34 @@ app.post("/users", (req, res) => {
         };
         // Store hash in your password DB.
         User.create(user).then(id => {
+          req.session["user_id"] = user.id;
+          req.session["user_email"] = user.email;
           res.redirect("/");
         });
         // users[randomID] = newUser;
         // req.session.userId = randomID;
-
       } else {
         res.status(400).send("You are already a registered user");
       }
-    })
+    });
   }
-})
+});
 
 // //Login page retrieve users who have already registered using the helper function up top. Error messages if not already registered.
 app.post("/login", (req, res) => {
   let { email, password } = req.body;
+  console.log(email);
   if (validUser(email, password)) {
     User.getOneByEmail(email).then(user => {
       if (user) {
-        result = bcrypt.compareSync(password, user.password)
-        console.log(result)
+        result = bcrypt.compareSync(password, user.password);
+        console.log("result" + result);
         if (result) {
-          console.log(result)
-          req.session['user_id'] = user.id;
-          res.redirect('/')
-          return (result);
+          console.log(result);
+          req.session["user_id"] = user.id;
+          req.session["user_email"] = user.email;
+          res.redirect("/");
+          return result;
         }
       }
     });
@@ -111,10 +124,6 @@ app.post("/logout", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
-
-
-
 
 //Helper functions here
 //generates a hashed password using bcrypt
@@ -174,7 +183,6 @@ app.listen(PORT, () => {
 //   res.render("urls_new", templateVars);
 // });
 
-
 //short urls verification page.
 // app.get("/urls/:shortURL", (req, res) => {
 //   let templateVars = {
@@ -188,7 +196,6 @@ app.listen(PORT, () => {
 //     res.render("urls_show", templateVars);
 //   }
 // });
-
 
 // app.get("/u/:shortURL", (req, res) => {
 //   const longURL = urlDatabase[req.params.shortURL].longURL;
@@ -204,7 +211,6 @@ app.listen(PORT, () => {
 //   };
 //   res.redirect("/urls");
 // });
-
 
 //Delete urls that only belong to specific longed in user. cookies verify users.
 // app.post("/urls/:shortURL/delete", (req, res) => {
@@ -228,7 +234,6 @@ app.listen(PORT, () => {
 //     res.redirect("/urls/");
 //   }
 // });
-
 
 // $(() => {
 //   $.ajax({
