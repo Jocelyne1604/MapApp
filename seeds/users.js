@@ -25,6 +25,9 @@ exports.seed = function (knex, Promise) {
             id: 1,
             user_id: 1,
             name: 'Jeff',
+            zoom: 1,
+            lat: 42.5,
+            lng: 79.5,
           },
         ]);
       }).then(function () {
