@@ -59,7 +59,7 @@
             document.getElementById("googleMap"),
             mapProp
           );
-          var myLatLng = {lat: 43.6, lng: -79.4};
+          var myLatLng = { lat: 43.6, lng: -79.4 };
           var marker = new google.maps.Marker({
             position: myLatLng,
             map: map,
@@ -71,42 +71,42 @@
     <div class="col-4">
       <h3>Welcome</h3>
       <h5>Favorites:</h5>
-   
+
       <h5>Maps:</h5>
-         <h5 class="category-list--title">List of points:</h5>
-<ul class="list-group"></ul>
+      <h5 class="category-list--title">List of points:</h5>
+      <ul class="list-group"></ul>
     </div>
   </div>
   </div>
 
-<div id="new-point">
-<form>
-  <div class="form-group">
-    <label for="exampleFormControlInput1">Name your point!</label>
-    <input class="form-control" id="exampleFormControlInput1" placeholder="Name">
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Pick your Map</label>
-    <select class="form-control" id="exampleFormControlSelect1">
-      <option>Map 1</option>
-      <option>Map 2</option>
-      <option>Map 3</option>
-      <option>Map 4</option>
-      <option>Map 5</option>
-    </select>
+  <div id="new-point">
+    <form>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Name your point!</label>
+        <input class="form-control" id="exampleFormControlInput1" placeholder="Name">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Pick your Map</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>Map 1</option>
+          <option>Map 2</option>
+          <option>Map 3</option>
+          <option>Map 4</option>
+          <option>Map 5</option>
+        </select>
 
-  </div>
-  <div class="form-group">
-    <label for="exampleFormControlTextarea1">Comment:</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-  
-  </div>
-       <form method="POST" action="NEW POINT">
-      <button class="btn btn-primary" type="submit" value="Submit" action="/NEW POINT">Submit</button>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Comment:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+
+      </div>
+      <form method="POST" action="NEW POINT">
+        <button class="btn btn-primary" type="submit" value="Submit" action="/NEW POINT">Submit</button>
+      </form>
     </form>
-</form>
 
-</div>
+  </div>
 
 
   <script>

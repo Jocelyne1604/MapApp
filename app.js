@@ -43,7 +43,7 @@ function generateRandomString() {
 //All GET routes here
 app.get("/", (req, res) => {
   res.render("index.ejs");
-  console.log('cookie: ', req.cookies)
+  console.log('cookie: ', req.session)
 });
 
 //register page users who are not already registered can register.
