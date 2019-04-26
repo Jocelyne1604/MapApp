@@ -16,10 +16,17 @@ module.exports = {
       return ids[0];
     });
   },
-  getMaps: function () {
-    return knex('maps').where(
+  getPlaces: function (mapId, callback) {
+    return knex('places').where('map_id', mapId).then(data => {
+      return callback(data);
+    });
+  },
+  getMaps: function (callback) {
+    return knex('maps').then(data => {
+      return callback(data);
+    })
+  }
 }
-
 
 
 
