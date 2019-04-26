@@ -64,6 +64,37 @@ app.get("/users/new", (req, res) => {
   res.render("index.ejs", templateVars);
 });
 
+app.post("/maps/new", (req, res) => {
+  if (!req.body.zoom || !req.body.lat || !req.body.lng || !req.body.name) {
+    console.log(req.body.name);
+    res.status(400).send("missing DATA!!!")
+    return;
+  } else if (!req.session['user_id']) {
+    //uncomment when you have html sorted and button done
+    // res.status(400).send("THOU shalt not pass invalid login");
+    // return;
+  }
+  User.createMaps(1, req.body.name, req.body.zoom, req.body.lat, req.body.lng).then(() => {
+    res.status(201).send("you are victoriouso\n")
+  });
+  // Users.createMaps(req.session['user_id'], req.body.name, req.body.zoom, req.body.lat, req.body.lng);
+});
+
+app.post("/places/new", (req, res) => {
+  if (!req.body.desc || !req.body.mapId || !req.body.lng || !req.body.lat) {
+    res.status(400).send("missing DATA!!!")
+    return;
+  } else if (!req.session['user_id']) {
+    //uncomment when you have html sorted and button done
+    // res.status(400).send("THOU shalt not pass invalid login");
+    // return;
+  }
+  User.createPlaces(1, req.body.desc, req.body.mapId, req.body.lat, req.body.lng).then(() => {
+    res.status(201).send("you are victoriouso2\n")
+  });
+  // Users.createMaps(req.session['user_id'], req.body.name, req.body.zoom, req.body.lat, req.body.lng);
+});
+
 app.post("/users", (req, res) => {
   // const randomID = generateRandomString();
   let { email, password } = req.body;
