@@ -4,7 +4,8 @@
   "description": "A web app that allows users to collaboratively create maps which list multiple \"points\", for example: \"Best Places to Eat Around Town\" or \"Locations of Movie Scenes\".",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:migrate": "knex migrate:latest"
   },
   "repository": {
     "type": "git",
