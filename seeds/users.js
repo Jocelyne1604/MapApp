@@ -1,6 +1,9 @@
-exports.in = function (knex, Promise) {
+exports.seed = function (knex, Promise) {
   // Deletes ALL existing entries
-  return knex('users').del()
+  return knex('users_maps').del()
+    .then(() => knex('places').del())
+    .then(() => knex('maps').del())
+    .then(() => knex('users').del())
     .then(function () {
       // Inserts seed entries
       return knex('users').insert([ //users
@@ -13,7 +16,7 @@ exports.in = function (knex, Promise) {
         {
           id: 2,
           name: 'Jaffar',
-          email: 'shah@northamerica.com',
+          email: 'jaffarshah@northamerica.com',
           password: 'jaffar'
         },
       ]).then(function () {
@@ -21,19 +24,44 @@ exports.in = function (knex, Promise) {
           {
             id: 1,
             user_id: 1,
-            name: 'Jeff',
+            name: 'Jaffars Proxy Financials',
+            zoom: 1,
+            lat: 42.5,
+            lng: 79.5,
+          },
+          {
+            id: 2,
+            user_id: 2,
+            name: 'Michaels Industries',
+            zoom: 1,
+            lat: 44.50,
+            lng: 79.1,
+          },
+          {
+            id: 3,
+            user_id: 2,
+            name: 'Jocelyn Centers',
+            zoom: 1,
+            lat: 41.2,
+            lng: 79.3,
           },
         ]);
       }).then(function () {
         return knex('places').insert([ //places
           {
-            id: 1,
-            name: 'Jeff',
             description: 'niceplace',
             map_id: 1,
             user_id: 1,
             lat: 0.5,
             lng: 0.8,
+
+          },
+          {
+            description: 'otherplace',
+            map_id: 1,
+            user_id: 1,
+            lat: 1.5,
+            lng: 10.8,
 
           },
         ]);
