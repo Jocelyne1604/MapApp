@@ -1,10 +1,10 @@
-var express = require("express");
+const express = require("express");
 const bcrypt = require('bcrypt');
-var app = express();
-var PORT = 8080; // default port 8080
-var auth = require('./auth/index')
-var cookieSession = require('cookie-session')
-var bodyParser = require('body-parser')
+const app = express();
+const PORT = 8080; // default port 8080
+const auth = require('./auth/index')
+const cookieSession = require('cookie-session')
+const bodyParser = require('body-parser')
 const User = require('./routes/users.js')
 // User.getOneByEmail("jeff@canada.ca").then(user => console.log('user', user));
 app.use(bodyParser.urlencoded({ extended: true }));
