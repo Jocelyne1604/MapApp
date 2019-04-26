@@ -13,7 +13,7 @@
 
 <% if (!user) {%> 
 
-  <a id="show_login" href="#" onClick="unhideReg()">Register</a>  
+  <span><a class="registerlink" href="#" onClick="unhideReg()">Register</a>  
     <form method="POST" action="<%=`/users`%>">
       <input class="form-control" id="register" type="email" name="email" placeholder="enter email here"
         style="display:none" />
@@ -24,7 +24,7 @@
 
   <a> | </a>
 
-    <a class-="loginlink" href="#" onClick="unhideLog()">Login</a>
+    <span><a class-="loginlink" href="#" onClick="unhideLog()">Login</a>
       <form method="POST" action="<%=`/login`%>">
         <input class="form-control" id="login" type="email" name="email" placeholder="enter email here"
         style="display:none" />
@@ -34,8 +34,8 @@
       </form>
   
 <% } else { %>
-  <p>Hello <%=user.email %></p>
   <form method="POST" action="<%=`/logout`%>">
+    <span>Hello <%=user.email %></span>
     <button class="btn btn-primary" type="submit" value="logout" action="/logout">Log out</button>
   </form>
 
