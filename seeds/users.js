@@ -16,7 +16,7 @@ exports.seed = function (knex, Promise) {
         {
           id: 2,
           name: 'Jaffar',
-          email: 'shah@northamerica.com',
+          email: 'jaffarshah@northamerica.com',
           password: 'jaffar'
         },
       ]).then(function () {
@@ -24,10 +24,26 @@ exports.seed = function (knex, Promise) {
           {
             id: 1,
             user_id: 1,
-            name: 'Jeff',
+            name: 'Jaffars Proxy Financials',
             zoom: 1,
             lat: 42.5,
             lng: 79.5,
+          },
+          {
+            id: 2,
+            user_id: 2,
+            name: 'Michaels Industries',
+            zoom: 1,
+            lat: 44.50,
+            lng: 79.1,
+          },
+          {
+            id: 3,
+            user_id: 2,
+            name: 'Jocelyn Centers',
+            zoom: 1,
+            lat: 41.2,
+            lng: 79.3,
           },
         ]);
       }).then(function () {
