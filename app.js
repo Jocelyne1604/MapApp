@@ -1,12 +1,15 @@
-var express = require("express");
+const express = require("express");
 const bcrypt = require("bcrypt");
-var app = express();
-var PORT = 8080; // default port 8080
-var auth = require("./auth/index");
-var cookieSession = require("cookie-session");
-var bodyParser = require("body-parser");
+const app = express();
+const PORT = 8080; // default port 8080
+const auth = require("./auth/index");
+const cookieSession = require("cookie-session");
+const bodyParser = require("body-parser");
+
 const User = require("./routes/users.js");
+
 // User.getOneByEmail("jeff@canada.ca").then(user => console.log('user', user));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
@@ -20,7 +23,8 @@ app.use(
   })
 );
 
-//Helper Functions
+//-----Helper Functions
+//Makes sure login and registration are valid
 function validUser(email, password) {
   const validEmail = typeof email == "string" && email.trim() != "";
   const validPassword =
@@ -31,28 +35,17 @@ function validUser(email, password) {
   return validEmail && validPassword;
 }
 
-//Generates a random string of 6 letters and numbers
-function generateRandomString() {
-  let text = "";
-  let possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < 7; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
 //All GET routes here
 app.get("/", (req, res) => {
   if (!req.session["user_email"]) {
     let templateVars = { user: null };
     res.render("index.ejs", templateVars);
-    console.log("cookie: ", req.session);
+    // console.log("cookie: ", req.session);
   } else {
     User.getOneByEmail(req.session["user_email"]).then(user => {
       let templateVars = { user: user };
       res.render("index.ejs", templateVars);
-      console.log("cookie: ", req.session);
+      // console.log("cookie: ", req.session);
     });
   }
 });
@@ -66,7 +59,7 @@ app.get("/users/new", (req, res) => {
 
 app.post("/maps/new", (req, res) => {
   if (!req.body.zoom || !req.body.lat || !req.body.lng || !req.body.name) {
-    console.log(req.body.name);
+    // console.log(req.body.name);
     res.status(400).send("missing DATA!!!")
     return;
   } else if (!req.session['user_id']) {
@@ -77,7 +70,8 @@ app.post("/maps/new", (req, res) => {
   User.createMaps(1, req.body.name, req.body.zoom, req.body.lat, req.body.lng).then(() => {
     res.status(201).send("you are victoriouso\n")
   });
-  // Users.createMaps(req.session['user_id'], req.body.name, req.body.zoom, req.body.lat, req.body.lng);
+  //uncomment when you have html sorted and button done
+  // User.createMaps(req.session['user_id'], req.body.name, req.body.zoom, req.body.lat, req.body.lng);
 });
 
 app.post("/places/new", (req, res) => {
@@ -92,16 +86,16 @@ app.post("/places/new", (req, res) => {
   User.createPlaces(1, req.body.desc, req.body.mapId, req.body.lat, req.body.lng).then(() => {
     res.status(201).send("you are victoriouso2\n")
   });
-  // Users.createMaps(req.session['user_id'], req.body.name, req.body.zoom, req.body.lat, req.body.lng);
+  //uncomment when you have html sorted and button done
+  // User.createMaps(req.session['user_id'], req.body.name, req.body.zoom, req.body.lat, req.body.lng);
 });
 
 app.post("/users", (req, res) => {
-  // const randomID = generateRandomString();
   let { email, password } = req.body;
 
   if (validUser(email, password)) {
     User.getOneByEmail(email).then(user => {
-      console.log("user", user);
+      // console.log("user", user);
       if (!user) {
         const user = {
           email: email,
@@ -114,8 +108,6 @@ app.post("/users", (req, res) => {
           req.session["user_email"] = user.email;
           res.redirect("/");
         });
-        // users[randomID] = newUser;
-        // req.session.userId = randomID;
       } else {
         res.status(400).send("You are already a registered user");
       }
@@ -126,14 +118,14 @@ app.post("/users", (req, res) => {
 // //Login page retrieve users who have already registered using the helper function up top. Error messages if not already registered.
 app.post("/login", (req, res) => {
   let { email, password } = req.body;
-  console.log(email);
+  // console.log(email);
   if (validUser(email, password)) {
     User.getOneByEmail(email).then(user => {
       if (user) {
         result = bcrypt.compareSync(password, user.password);
-        console.log("result" + result);
+        // console.log("result" + result);
         if (result) {
-          console.log(result);
+          // console.log(result);
           req.session["user_id"] = user.id;
           req.session["user_email"] = user.email;
           res.redirect("/");
