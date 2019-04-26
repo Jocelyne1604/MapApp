@@ -81,29 +81,26 @@ app.post("/users", (req, res) => {
   }
 })
 
-// //Login page where only registered users can login
-// app.get("/login", (req, res) => {
-//   let templateVars = { urls: urlDatabase, users: users[req.session["userId"]] };
-//   res.render("urls_login", templateVars);
-// });
-
 // //Login page retrieve users who have already registered using the helper function up top. Error messages if not already registered.
 app.post("/login", (req, res) => {
   let { email, password } = req.body;
   if (validUser(email, password)) {
     User.getOneByEmail(email).then(user => {
-      console.log('user', user);
-      console.log('YAYYY');
-
-    })
+      if (user) {
+        result = bcrypt.compareSync(password, user.password)
+        console.log(result)
+        if (result) {
+          console.log(result)
+          req.session['user_id'] = user.id;
+          res.redirect('/')
+          return (result);
+        }
+      }
+    });
   } else {
     res.status(400).send("THOU shalt not pass invalid login");
   }
 });
-//   const user = retrieveUser(req.body.email, req.body.password);
-//   if (user) {
-//     req.session.userId = user.id;
-//     res.redirect("/urls");
 
 // //Logout button application, redirects to login and deletes session encrypted cookie.
 app.post("/logout", (req, res) => {
