@@ -1,6 +1,6 @@
 "use strict";
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const ENV = "development";
 const knexConfig = require("../knexfile");
@@ -78,11 +78,7 @@ module.exports = {
       console.log(err);
     });
   }
-}
-
-
-
-
+};
 
 //   router.get("/", (req, res) => {
 //     knex

@@ -24,7 +24,7 @@ exports.seed = function (knex, Promise) {
           {
             id: 1,
             user_id: 1,
-            name: 'Jaffars Proxy Financials',
+            name: 'Jaffars Financials',
             zoom: 1,
             lat: 42.5,
             lng: 79.5,
