@@ -1,0 +1,34 @@
+body {
+  background-color: #eee;
+  <img src="backgroundpic.jpg" alt="maps">
+}
+
+h1 {
+  color: #8d989b;
+}
+
+.form-control {
+  width: 280px;
+  margin: 0.1em;
+  text-align: center;
+  visibility: hidden;
+}
+
+#new-point {
+  margin: 20px;
+  background-color: #ffffff;
+}
+
+
+.sidebar {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  background-color: lightseagreen;
+  border-radius: 3%;
+}
+
+.footer {
+  
+}
