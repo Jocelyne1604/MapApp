@@ -37,20 +37,29 @@ function validUser(email, password) {
 
 //All GET routes here
 app.get("/", (req, res) => {
-  User.getMaps(function (data) {
-  })
-  if (!req.session["user_email"]) {
-    let templateVars = { user: null };
-    res.render("index.ejs", templateVars);
-  } else {
-    User.getOneByEmail(req.session["user_email"]).then(user => {
-      User.getMaps(function (maps) {
-        let templateVars = { user: user, maps: maps };
-        res.render("index.ejs", templateVars);
-      })
-
-    });
+  let currentMap = {
+    id: 2,
+    name: 'Michaels Industries',
+    user_id: 2,
+    created_at: null,
+    updated_at: null,
+    zoom: 1,
+    lat: 44.5,
+    lng: 79.1
   }
+  // if (!req.session["user_email"]) {
+  //   let templateVars = { user: null };
+  //   res.render("index.ejs", templateVars);
+  // } else {
+  User.getOneByEmail(req.session["user_email"]).then(user => {
+    User.getMaps(function (maps) {
+      let templateVars = { user: user, maps: maps, currentMap: JSON.stringify(currentMap) };
+      console.log(templateVars)
+      res.render("index.ejs", templateVars);
+    })
+
+  });
+  // }
 });
 
 //peramiter mapId is the users id whom is currently logged in
