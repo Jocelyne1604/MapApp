@@ -1,56 +1,68 @@
 "use strict";
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const ENV = "development";
 const knexConfig = require("../knexfile");
 const knex = require("knex")(knexConfig[ENV]);
 
 module.exports = {
-
-  getOneByEmail: function (email) {
-    return knex('users').where('email', email).first();
+  getOneByEmail: function(email) {
+    return knex("users")
+      .where("email", email)
+      .first();
   },
-  create: function (user) {
-    return knex('users').insert(user, 'id').then(ids => {
-      return ids[0];
-    });
+  create: function(user) {
+    return knex("users")
+      .insert(user, "id")
+      .then(ids => {
+        return ids[0];
+      });
   },
-  getPlaces: function (mapId, callback) {
-    return knex('places').where('map_id', mapId).then(data => {
+  getPlaces: function(mapId, callback) {
+    return knex("places")
+      .where("map_id", mapId)
+      .then(data => {
+        return callback(data);
+      });
+  },
+  getMaps: function(callback) {
+    return knex("maps").then(data => {
       return callback(data);
     });
   },
-  getMaps: function (callback) {
-    return knex('maps').then(data => {
-      return callback(data);
-    });
+  createMaps: function(userId, name, zoom, lat, lng) {
+    return knex("maps")
+      .insert({ name: name, user_id: userId, zoom: zoom, lat: lat, lng: lng })
+      .then(() => {
+        console.log("great Success");
+      })
+      .catch(err => {
+        console.log("great Failure");
+        console.log(err);
+      });
   },
-  createMaps: function (userId, name, zoom, lat, lng) {
-    return knex('maps').insert({ name: name, user_id: userId, zoom: zoom, lat: lat, lng: lng }).then(() => {
-      console.log("great Success")
-    }).catch((err) => {
-      console.log("great Failure");
-      console.log(err);
-    });
-  },
-  createPlaces: function (userId, description, mapId, lat, lng) {
-    let date = new Date()
-    return knex('places').insert({
-      user_id: userId, description: description, map_id: mapId,
-      created_at: date, updated_at: date, lat: lat, lng: lng
-    }).then(() => {
-      console.log("great Success")
-    }).catch((err) => {
-      console.log("great Failure");
-      console.log(err);
-    });
+  createPlaces: function(userId, description, mapId, lat, lng) {
+    let date = new Date();
+    return knex("places")
+      .insert({
+        user_id: userId,
+        description: description,
+        map_id: mapId,
+        created_at: date,
+        updated_at: date,
+        lat: lat,
+        lng: lng
+      })
+      .then(() => {
+        console.log("great Success");
+      })
+      .catch(err => {
+        console.log("great Failure");
+        console.log(err);
+      });
   }
-}
-
-
-
-
+};
 
 //   router.get("/", (req, res) => {
 //     knex
