@@ -7,8 +7,7 @@ const cookieSession = require("cookie-session");
 const bodyParser = require("body-parser");
 
 const User = require("./routes/users.js");
-
-// User.getOneByEmail("jeff@canada.ca").then(user => console.log('user', user));
+var $ = require("jquery");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -22,6 +21,7 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   })
 );
+
 
 //-----Helper Functions
 //Makes sure login and registration are valid
@@ -37,38 +37,60 @@ function validUser(email, password) {
 
 //All GET routes here
 app.get("/", (req, res) => {
+  User.getMaps(function (data) {
+  })
   if (!req.session["user_email"]) {
     let templateVars = { user: null };
     res.render("index.ejs", templateVars);
-    // console.log("cookie: ", req.session);
   } else {
     User.getOneByEmail(req.session["user_email"]).then(user => {
-      let templateVars = { user: user };
-      res.render("index.ejs", templateVars);
-      // console.log("cookie: ", req.session);
+      User.getMaps(function (maps) {
+        let templateVars = { user: user, maps: maps };
+        res.render("index.ejs", templateVars);
+      })
+
     });
   }
 });
 
-//register page users who are not already registered can register.
-//changes routes names from /register
-app.get("/users/new", (req, res) => {
-  let templateVars = { users: users[req.session["userId"]], showLogin: false };
-  res.render("index.ejs", templateVars);
-});
+//peramiter mapId is the users id whom is currently logged in
+//and clicks on the listed map name. should pull overlay of all places corresponding to that map.
+app.get("/users/places", (req, res) => {
+  User.getPlaces(mapId, function (data) {
+  })
+  res.redirect('/');
+}),
+
+  app.get("/users/maps", (req, res) => {
+    User.getUsersMaps(userId, function (data) {
+    })
+    res.redirect('/');
+  }),
+
+  //register page users who are not already registered can register.
+  //changes routes names from /register
+  app.get("/users/new", (req, res) => {
+    let templateVars = { users: users[req.session["userId"]], showLogin: false };
+    res.render("index.ejs", templateVars);
+  });
 
 app.post("/maps/new", (req, res) => {
   if (!req.body.zoom || !req.body.lat || !req.body.lng || !req.body.name) {
-    // console.log(req.body.name);
-    res.status(400).send("missing DATA!!!")
+    res.status(400).send("missing DATA!!!");
     return;
-  } else if (!req.session['user_id']) {
+  } else if (!req.session["user_id"]) {
     //uncomment when you have html sorted and button done
     // res.status(400).send("THOU shalt not pass invalid login");
     // return;
   }
-  User.createMaps(1, req.body.name, req.body.zoom, req.body.lat, req.body.lng).then(() => {
-    res.status(201).send("you are victoriouso\n")
+  User.createMaps(
+    1,
+    req.body.name,
+    req.body.zoom,
+    req.body.lat,
+    req.body.lng
+  ).then(() => {
+    res.status(201).send("you are victoriouso\n");
   });
   //uncomment when you have html sorted and button done
   // User.createMaps(req.session['user_id'], req.body.name, req.body.zoom, req.body.lat, req.body.lng);
@@ -76,15 +98,21 @@ app.post("/maps/new", (req, res) => {
 
 app.post("/places/new", (req, res) => {
   if (!req.body.desc || !req.body.mapId || !req.body.lng || !req.body.lat) {
-    res.status(400).send("missing DATA!!!")
+    res.status(400).send("missing DATA!!!");
     return;
-  } else if (!req.session['user_id']) {
+  } else if (!req.session["user_id"]) {
     //uncomment when you have html sorted and button done
     // res.status(400).send("THOU shalt not pass invalid login");
     // return;
   }
-  User.createPlaces(1, req.body.desc, req.body.mapId, req.body.lat, req.body.lng).then(() => {
-    res.status(201).send("you are victoriouso2\n")
+  User.createPlaces(
+    1,
+    req.body.desc,
+    req.body.mapId,
+    req.body.lat,
+    req.body.lng
+  ).then(() => {
+    res.status(201).send("you are victoriouso2\n");
   });
   //uncomment when you have html sorted and button done
   // User.createMaps(req.session['user_id'], req.body.name, req.body.zoom, req.body.lat, req.body.lng);
@@ -92,10 +120,8 @@ app.post("/places/new", (req, res) => {
 
 app.post("/users", (req, res) => {
   let { email, password } = req.body;
-
   if (validUser(email, password)) {
     User.getOneByEmail(email).then(user => {
-      // console.log("user", user);
       if (!user) {
         const user = {
           email: email,
@@ -115,17 +141,15 @@ app.post("/users", (req, res) => {
   }
 });
 
-// //Login page retrieve users who have already registered using the helper function up top. Error messages if not already registered.
+// //Login page retrieve users who have already registered using the helper function up top.
+//Error messages if not already registered.
 app.post("/login", (req, res) => {
   let { email, password } = req.body;
-  // console.log(email);
   if (validUser(email, password)) {
     User.getOneByEmail(email).then(user => {
       if (user) {
         result = bcrypt.compareSync(password, user.password);
-        // console.log("result" + result);
         if (result) {
-          // console.log(result);
           req.session["user_id"] = user.id;
           req.session["user_email"] = user.email;
           res.redirect("/");
@@ -147,6 +171,11 @@ app.post("/logout", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
+
+
+
+
+
 
 //Helper functions here
 //generates a hashed password using bcrypt
