@@ -22,7 +22,6 @@ app.use(
   })
 );
 
-
 //-----Helper Functions
 //Makes sure login and registration are valid
 function validUser(email, password) {
@@ -37,49 +36,39 @@ function validUser(email, password) {
 
 //All GET routes here
 app.get("/", (req, res) => {
-  let currentMap = {
-    id: 2,
-    name: 'Michaels Industries',
-    user_id: 2,
-    created_at: null,
-    updated_at: null,
-    zoom: 1,
-    lat: 44.5,
-    lng: 79.1
+  // User.getMaps(function (data) {
+  // })
+  console.log("user email", req.session["user_email"]);
+  if (!req.session["user_email"]) {
+    let templateVars = { user: null, maps: [] };
+    res.render("index.ejs", templateVars);
+  } else {
+    User.getOneByEmail(req.session["user_email"]).then(user => {
+      User.getMaps(function(maps) {
+        let templateVars = { user: user, maps: maps };
+        res.render("index.ejs", templateVars);
+      });
+    });
   }
-  // if (!req.session["user_email"]) {
-  //   let templateVars = { user: null };
-  //   res.render("index.ejs", templateVars);
-  // } else {
-  User.getOneByEmail(req.session["user_email"]).then(user => {
-    User.getMaps(function (maps) {
-      let templateVars = { user: user, maps: maps, currentMap: JSON.stringify(currentMap) };
-      console.log(templateVars)
-      res.render("index.ejs", templateVars);
-    })
-
-  });
-  // }
 });
 
 //peramiter mapId is the users id whom is currently logged in
 //and clicks on the listed map name. should pull overlay of all places corresponding to that map.
 app.get("/users/places", (req, res) => {
-  User.getPlaces(mapId, function (data) {
-  })
-  res.redirect('/');
+  User.getPlaces(mapId, function(data) {});
+  res.redirect("/");
 }),
-
   app.get("/users/maps", (req, res) => {
-    User.getUsersMaps(userId, function (data) {
-    })
-    res.redirect('/');
+    User.getUsersMaps(userId, function(data) {});
+    res.redirect("/");
   }),
-
   //register page users who are not already registered can register.
   //changes routes names from /register
   app.get("/users/new", (req, res) => {
-    let templateVars = { users: users[req.session["userId"]], showLogin: false };
+    let templateVars = {
+      users: users[req.session["userId"]],
+      showLogin: false
+    };
     res.render("index.ejs", templateVars);
   });
 
@@ -154,16 +143,18 @@ app.post("/users", (req, res) => {
 //Error messages if not already registered.
 app.post("/login", (req, res) => {
   let { email, password } = req.body;
+  console.log("processing Logging in");
   if (validUser(email, password)) {
     User.getOneByEmail(email).then(user => {
       if (user) {
-        result = bcrypt.compareSync(password, user.password);
-        if (result) {
-          req.session["user_id"] = user.id;
-          req.session["user_email"] = user.email;
-          res.redirect("/");
-          return result;
-        }
+        // result = bcrypt.compareSync(password, user.password);
+        // if (result) {
+        console.log("Logging in");
+        req.session["user_id"] = user.id;
+        req.session["user_email"] = "a@b.c";
+        res.redirect("/");
+        return true;
+        // }
       }
     });
   } else {
@@ -180,11 +171,6 @@ app.post("/logout", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
-
-
-
-
 
 //Helper functions here
 //generates a hashed password using bcrypt
