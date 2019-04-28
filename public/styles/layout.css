@@ -1,0 +1,36 @@
+/*HEADER*/
+.navbar {
+  -webkit-box-shadow: 0 8px 6px -6px grey;
+  -moz-box-shadow: 0 8px 6px -6px grey;
+  box-shadow: 0 8px 6px -6px grey;
+  z-index: 9999;
+
+  /* the rest of your styling */
+}
+
+.nav-title {
+  text-align: center;
+}
+
+.logout-div {
+  color: white;
+  text-align: right;
+  margin: -5px 20px -10px 100;
+}
+
+/*BODY*/
+#main-section {
+}
+
+.sidebar {
+  margin-top: 10px;
+  padding-left: -20px;
+}
+
+#new-point {
+  margin: 20px;
+}
+
+#staticEmail2 {
+  color: white;
+}

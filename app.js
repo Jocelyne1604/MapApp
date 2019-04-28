@@ -11,7 +11,7 @@ var $ = require("jquery");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
+app.use(express.static("/styles" + "/public"));
 app.use(
   cookieSession({
     name: "session",
@@ -21,7 +21,6 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   })
 );
-
 
 //-----Helper Functions
 //Makes sure login and registration are valid
@@ -37,18 +36,16 @@ function validUser(email, password) {
 
 //All GET routes here
 app.get("/", (req, res) => {
-  User.getMaps(function (data) {
-  })
+  User.getMaps(function(data) {});
   if (!req.session["user_email"]) {
     let templateVars = { user: null };
     res.render("index.ejs", templateVars);
   } else {
     User.getOneByEmail(req.session["user_email"]).then(user => {
-      User.getMaps(function (maps) {
+      User.getMaps(function(maps) {
         let templateVars = { user: user, maps: maps };
         res.render("index.ejs", templateVars);
-      })
-
+      });
     });
   }
 });
@@ -56,21 +53,20 @@ app.get("/", (req, res) => {
 //peramiter mapId is the users id whom is currently logged in
 //and clicks on the listed map name. should pull overlay of all places corresponding to that map.
 app.get("/users/places", (req, res) => {
-  User.getPlaces(mapId, function (data) {
-  })
-  res.redirect('/');
+  User.getPlaces(mapId, function(data) {});
+  res.redirect("/");
 }),
-
   app.get("/users/maps", (req, res) => {
-    User.getUsersMaps(userId, function (data) {
-    })
-    res.redirect('/');
+    User.getUsersMaps(userId, function(data) {});
+    res.redirect("/");
   }),
-
   //register page users who are not already registered can register.
   //changes routes names from /register
   app.get("/users/new", (req, res) => {
-    let templateVars = { users: users[req.session["userId"]], showLogin: false };
+    let templateVars = {
+      users: users[req.session["userId"]],
+      showLogin: false
+    };
     res.render("index.ejs", templateVars);
   });
 
@@ -171,11 +167,6 @@ app.post("/logout", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
-
-
-
-
 
 //Helper functions here
 //generates a hashed password using bcrypt
