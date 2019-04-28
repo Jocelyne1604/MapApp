@@ -22,9 +22,9 @@ module.exports = {
       });
   },
 
-  getPlaces: function (mapId, callback) {
+  getPlaces: function (callback) {
     return knex('places')
-      .where('map_id', mapId)
+      // .where('map_id', mapId)
       .then(data => {
         return callback(data);
       });

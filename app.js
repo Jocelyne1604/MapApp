@@ -36,29 +36,55 @@ function validUser(email, password) {
 }
 
 function search(maps, query_mapid) {
+  let currentPoints = [];
   for (let i = 0; i < maps.length; i++) {
     if (maps[i].id === query_mapid) {
+      // console.log(maps[i])
       return maps[i];
     }
   }
 }
+function searchPlaces(places, query_mapid) {
+  let currentPoints = [];
+  for (let i = 0; i < places.length; i++) {
+    if (places[i].map_id === query_mapid) {
+      currentPoints.push(places)
+      return currentPoints;
+    }
+  }
+}
+
 
 //All GET routes here
 app.get("/", (req, res) => {
+  let templateVars;
+  let currentMap;
+  let map;
   if (!req.session["user_email"]) {
-    let templateVars = { user: null, maps: null, currentMap: null };
+    let currentMap = { zoom: 10, lat: 43.6532, lng: -79.3832 }
+    let templateVars = {
+      user: null, maps: null, places: null,
+      currentMap: JSON.stringify(currentMap)
+    };
     res.render("index.ejs", templateVars);
   } else {
     User.getOneByEmail(req.session["user_email"]).then(user => {
       User.getMaps(function (maps) {
-        let currentMap = search(maps, Number(req.query.mapid));
-        console.log("currentMap", currentMap);
-        let templateVars = { user: user, maps: maps, currentMap: JSON.stringify(currentMap) };
-        // console.log(templateVars);
-        res.render("index.ejs", templateVars);
+        currentMap = search(maps, Number(req.query.mapid));
+        map = maps
       })
+      User.getPlaces(function (places) {
+        let currentPlaces = searchPlaces(places, Number(req.query.mapid));
+        templateVars = {
+          user: user, maps: map, currentMap: JSON.stringify(currentMap),
+          currentPlaces: (currentPlaces[0])
+
+        };
+        console.log(templateVars.currentPlaces)
+        res.render("index.ejs", templateVars);
+      });
     });
-  };
+  }
 })
 
 //peramiter mapId is the users id whom is currently logged in

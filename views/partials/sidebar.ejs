@@ -5,6 +5,9 @@
   <% for (let index in maps) { %>
   <li><strong><a href="/?mapid=<%= maps[index].id %>"><%= maps[index].name %></a></strong>
     <% }; %>
-    <h5 class="category-list--title">List of points:</h5>
-    <ul class="list-group"></ul>
+    <% for (let index in currentPlaces) { %>
+  <li><a href="/?mapid=<%= maps[index].id %>"><%= currentPlaces[index].description %></a></li>
+  <% }; %>
+  <h5 class="category-list--title">List of points:</h5>
+  <ul class="list-group"></ul>
 </div>
