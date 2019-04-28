@@ -3,10 +3,8 @@
   <h3>Welcome</h3>
   <h5>Favorites:</h5>
   <% for (let index in maps) { %>
-  <a href="/<%= index %>" class="form-inline"></a>
-  <li><strong><a href="/?mapid=<%= maps[index].id %>"><%= index %></a></strong><strong>
-      :</strong> <%= maps[index].name %></a></li>
-  <% }; %>
-  <h5 class="category-list--title">List of points:</h5>
-  <ul class="list-group"></ul>
+  <li><strong><a href="/?mapid=<%= maps[index].id %>"><%= maps[index].name %></a></strong>
+    <% }; %>
+    <h5 class="category-list--title">List of points:</h5>
+    <ul class="list-group"></ul>
 </div>

@@ -35,37 +35,38 @@ function validUser(email, password) {
   return validEmail && validPassword;
 }
 
+function search(maps, query_mapid) {
+  for (let i = 0; i < maps.length; i++) {
+    if (maps[i].id === query_mapid) {
+      return maps[i];
+    }
+  }
+}
+
 //All GET routes here
 app.get("/", (req, res) => {
-  let currentMap = {
-    id: 2,
-    name: 'Michaels Industries',
-    user_id: 2,
-    created_at: null,
-    updated_at: null,
-    zoom: 1,
-    lat: 44.5,
-    lng: 79.1
-  }
-  // if (!req.session["user_email"]) {
-  //   let templateVars = { user: null };
-  //   res.render("index.ejs", templateVars);
-  // } else {
-  User.getOneByEmail(req.session["user_email"]).then(user => {
-    User.getMaps(function (maps) {
-      let templateVars = { user: user, maps: maps, currentMap: JSON.stringify(currentMap) };
-      console.log(templateVars)
-      res.render("index.ejs", templateVars);
-    })
-
-  });
-  // }
-});
+  if (!req.session["user_email"]) {
+    let templateVars = { user: null, maps: null, currentMap: null };
+    res.render("index.ejs", templateVars);
+  } else {
+    User.getOneByEmail(req.session["user_email"]).then(user => {
+      User.getMaps(function (maps) {
+        let currentMap = search(maps, Number(req.query.mapid));
+        console.log("currentMap", currentMap);
+        let templateVars = { user: user, maps: maps, currentMap: JSON.stringify(currentMap) };
+        // console.log(templateVars);
+        res.render("index.ejs", templateVars);
+      })
+    });
+  };
+})
 
 //peramiter mapId is the users id whom is currently logged in
 //and clicks on the listed map name. should pull overlay of all places corresponding to that map.
 app.get("/users/places", (req, res) => {
   User.getPlaces(mapId, function (data) {
+    let templateVars = { user: user, places: places };
+    res.render("index.ejs", templateVars);
   })
   res.redirect('/');
 }),
