@@ -75,12 +75,12 @@ app.get("/", (req, res) => {
       })
       User.getPlaces(function (places) {
         let currentPlaces = searchPlaces(places, Number(req.query.mapid));
+        // console.log(currentPlaces)
         templateVars = {
           user: user, maps: map, currentMap: JSON.stringify(currentMap),
           currentPlaces: (currentPlaces[0])
-
         };
-        console.log(templateVars.currentPlaces)
+        // console.log(templateVars.currentPlaces)
         res.render("index.ejs", templateVars);
       });
     });
