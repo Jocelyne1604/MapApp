@@ -213,7 +213,8 @@ app.post("/login", (req, res) => {
       }
     });
   } else {
-    res.status(400).send("THOU shalt not pass invalid login");
+    res.status(400);
+    res.render("./partials/error.ejs");
   }
 });
 
