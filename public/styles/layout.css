@@ -49,11 +49,13 @@
 
 #staticEmail2 {
   color: white;
-  width: 250px;
+  width: 200px;
 }
 
 #capture-button {
   margin: 20px;
+  position: relative;
+  float: right;
 }
 
 footer {
@@ -65,4 +67,14 @@ h1 {
   color: white;
   text-align: right;
   margin: 10px 10px 10px 0;
+}
+
+#pleaselogin {
+  color: white;
+  text-align: right;
+  margin: 25px 10px 10px 10px;
+}
+
+#maplist {
+  margin-top: 80px;
 }

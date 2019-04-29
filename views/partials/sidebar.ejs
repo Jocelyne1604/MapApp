@@ -8,9 +8,12 @@
     </form>
   </div>
   
-  <h1>Maps:</h1>
 
   <div>
+  <% if (user) {%>
+<div id="maplist">
+  <h1>Maps:</h1>
+
     <% for (let index in maps) { %>
       <ul class="list-group-item list-group-item-action active" style="list-style: none;">
         <li><strong><a class="list-group-item list-group-item-action" href="/?mapid=<%= maps[index].id %>"><%= maps[index].name %></a></strong></li>
@@ -23,6 +26,11 @@
       </ul>
     <% }; %>
     
- 
+  <% } else { %>
+
+  <p id="pleaselogin">Please Loggin to see your saved maps</p>
+
+   <% }; %>
+      </div>
 
 
