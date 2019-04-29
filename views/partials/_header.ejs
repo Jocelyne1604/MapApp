@@ -1,6 +1,7 @@
 
 <script>
 
+
   function unhideLog() {
     document.getElementById('login').style.display = "block";
     document.getElementById('login2').style.display = "block";
@@ -34,6 +35,8 @@
   <div class="form-group mb-2">
       <a class="nav-link active"href="#" onClick="unhideReg()">Register</a> 
 </div>
+
+<div id="register-form">
   <div class="form-group mx-sm-3 mb-2">
      <label for="register" class="sr-only">email</label>
       <input class="form-control" id="register" type="email" name="email" placeholder="enter email here"
@@ -45,7 +48,7 @@
       <input class="form-control" id="register2" type="password" name="password" placeholder="Enter password here"
       style="display:none" />
       </div>
-
+</div>
       <button class="form-group mx-sm-3 mb-2 btn btn-outline-primary" type="submit" value="Register" id="register3" style="display:none">Register</button>
 </form>
 </li>
@@ -78,8 +81,8 @@
   <% } else { %>
 <form class="form-inline" method="POST" action="<%=`/logout`%>">
   <div class="form-group mb-2 logout-div">
-    <label for="staticEmail2" class="sr-only">Hello</label>
-      <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="Hello TESTTESTTEST">
+    <label for="staticEmail2" class="sr-only"></label>
+      <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="Logged in as: <%= user.email %>">
   </div>
       <button class="form-group mx-sm-3 mb-2 btn btn btn-outline-primary" type="submit" value="logout" action="/logout">Log out</button>
   </form>
