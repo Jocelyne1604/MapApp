@@ -1,0 +1,59 @@
+/*HEADER*/
+.navbar {
+  -webkit-box-shadow: 0 8px 6px -6px grey;
+  -moz-box-shadow: 0 8px 6px -6px grey;
+  box-shadow: 0 8px 6px -6px grey;
+  z-index: 9999;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+
+  /* the rest of your styling */
+}
+
+.nav-title {
+  text-align: center;
+}
+
+.logout-div {
+  color: white;
+  text-align: right;
+  margin: -5px 20px -10px 100;
+}
+
+#background {
+  background-image: url("background.jpeg");
+  opacity: 0.9;
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+}
+
+/*BODY*/
+#main-section {
+  margin-top: 68px;
+}
+
+.sidebar {
+  margin-top: 10px;
+  padding-left: -20px;
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+}
+
+.list-group-item {
+  background-color: white;
+}
+
+#new-point {
+  margin: 20px;
+}
+
+#staticEmail2 {
+  color: white;
+}
+
+#capture-button {
+  margin: 20px;
+}
