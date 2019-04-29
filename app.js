@@ -34,17 +34,71 @@ function validUser(email, password) {
   return validEmail && validPassword;
 }
 
+function search(maps, query_mapid) {
+  let currentPoints = [];
+  for (let i = 0; i < maps.length; i++) {
+    if (maps[i].id === query_mapid) {
+      // console.log(maps[i])
+      return maps[i];
+    }
+  }
+}
+function searchPlaces(places, query_mapid) {
+  let currentPoints = [];
+  for (let i = 0; i < places.length; i++) {
+    if (places[i].map_id === query_mapid) {
+      currentPoints.push(places);
+      return currentPoints;
+    }
+  }
+}
+
 //All GET routes here
 app.get("/", (req, res) => {
-  User.getMaps(function(data) {});
+  let templateVars;
+  // let currentMap;
+  let map;
+  let currentMap = { zoom: 7, lat: 36.7783, lng: -119.4179 };
   if (!req.session["user_email"]) {
-    let templateVars = { user: null };
-    res.render("index.ejs", templateVars);
+    // console.log(currentMap)
+    let currentPlaces = null;
+    User.getMaps(function(maps) {
+      let templateVars = {
+        user: null,
+        maps: maps,
+        places: null,
+        currentMap: JSON.stringify(currentMap),
+        currentPlaces: currentPlaces
+      };
+      res.render("index.ejs", templateVars);
+    });
   } else {
     User.getOneByEmail(req.session["user_email"]).then(user => {
       User.getMaps(function(maps) {
-        let templateVars = { user: user, maps: maps };
-        res.render("index.ejs", templateVars);
+        currentMap = search(maps, Number(req.query.mapid));
+        map = maps;
+      });
+      User.getPlaces(function(places) {
+        let currentPlaces = searchPlaces(places, Number(req.query.mapid));
+        if (currentPlaces) {
+          templateVars = {
+            user: user,
+            maps: map,
+            currentMap: JSON.stringify(currentMap),
+            currentPlaces: currentPlaces[0]
+          };
+          res.render("index.ejs", templateVars);
+        } else {
+          let currentMap = { zoom: 7, lat: 36.7783, lng: -119.4179 };
+          templateVars = {
+            user: user,
+            maps: map,
+            currentMap: JSON.stringify(currentMap),
+            currentPlaces: currentPlaces
+          };
+
+          res.render("index.ejs", templateVars);
+        }
       });
     });
   }
@@ -53,7 +107,10 @@ app.get("/", (req, res) => {
 //peramiter mapId is the users id whom is currently logged in
 //and clicks on the listed map name. should pull overlay of all places corresponding to that map.
 app.get("/users/places", (req, res) => {
-  User.getPlaces(mapId, function(data) {});
+  User.getPlaces(mapId, function(data) {
+    let templateVars = { user: user, places: places };
+    res.render("index.ejs", templateVars);
+  });
   res.redirect("/");
 }),
   app.get("/users/maps", (req, res) => {
@@ -93,14 +150,16 @@ app.post("/maps/new", (req, res) => {
 });
 
 app.post("/places/new", (req, res) => {
-  if (!req.body.desc || !req.body.mapId || !req.body.lng || !req.body.lat) {
-    res.status(400).send("missing DATA!!!");
-    return;
-  } else if (!req.session["user_id"]) {
-    //uncomment when you have html sorted and button done
-    // res.status(400).send("THOU shalt not pass invalid login");
-    // return;
-  }
+  // console.log("sdfsdfsdfsdfdsdsfsdf", req.body)
+  // if (!req.body.desc || !req.body.mapId || !req.body.lng || !req.body.lat) {
+  //   console.log("sdfsdfsdfsdfdsdsfsdf", req.body)
+  //   res.status(400).send("missing DATA!!!");
+  //   return;
+  // } else if (!req.session["user_id"]) {
+  //   //uncomment when you have html sorted and button done
+  //   // res.status(400).send("THOU shalt not pass invalid login");
+  //   // return;
+  // }
   User.createPlaces(
     1,
     req.body.desc,

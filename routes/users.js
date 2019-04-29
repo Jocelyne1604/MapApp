@@ -1,6 +1,6 @@
 "use strict";
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const ENV = "development";
 const knexConfig = require("../knexfile");
@@ -22,9 +22,9 @@ module.exports = {
       });
   },
 
-  getPlaces: function (mapId, callback) {
+  getPlaces: function (callback) {
     return knex('places')
-      .where('map_id', mapId)
+      // .where('map_id', mapId)
       .then(data => {
         return callback(data);
       });
@@ -78,11 +78,7 @@ module.exports = {
       console.log(err);
     });
   }
-}
-
-
-
-
+};
 
 //   router.get("/", (req, res) => {
 //     knex
