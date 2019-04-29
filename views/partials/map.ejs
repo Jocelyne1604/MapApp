@@ -1,10 +1,19 @@
 <div class="row">
   <div class="col-8">
     <div id="googleMap" style="width:100%;height:400px;"></div>
-    <div id="currentMap"><%=currentMap %></div>
+    <div style="visibility:hidden" id="currentMap"><%= currentMap %></div>
+    <div style="visibility:hidden" id="currentPlaces"><%= JSON.stringify(currentPlaces) %></div>
+    <form>
+      <button type="Capture Map" method="POST" action="/maps/new" class="saveMap">HELLO</button>
+    </form>
     <script>
-      var currentMap = 1
-      console.log(currentMap);
+
+      var currentMap = JSON.parse($("#currentMap").text())
+      var currentPlaces = JSON.parse($("#currentPlaces").text())
+
+
+
+
       $(document).ready(function () {
         $('#submitForm').on('submit', () => {
           $('#Longitude').val(temp_marker.position.lng())
@@ -12,87 +21,59 @@
         });
       })
 
-      // create maps db on client
-      // ajax request to populate maps object
-      // change functions to take mapID
-      // store viewedMapId
-
-      // showMap(map)
-      // addHandler to the map
-      // create marker (post to backend) on response call addMarker
-
-      // const maps = {};
-
-      // function showMap(map) {
-      //   maps[map.id] = new google.maps.Map(
-      //     document.getElementById("googleMap"),
-      //     {
-      //       center: new google.maps.LatLng(map.lat, map.lng),
-      //       zoom: map.zoom
-      //     }
-      //   );
-      // }
-
-      // function loadMaps(maps) {
-      //   maps.forEach(map => maps[map.id] = map);
-      // }
-
       var markersArray = [];
       var map;
-      // var markers = [];
-      var temp_marker = {};
+      var mapid = 0;
+      var currentMarker = {};
 
-      function initMap() {
-        var mapProp = {
-          center: new google.maps.LatLng(43.761539, -79.411079),
-          zoom: 10
-        };
+      function initMap(lat, lng, zoom) {
         var map = new google.maps.Map(
-          document.getElementById("googleMap"),
-          mapProp
-        );
+          document.getElementById("googleMap"), {
+            center: { lat: 69.5, lng: 50 },
+            zoom: zoom
+          });
+        console.log("mappp", map)
 
         google.maps.event.addListener(map, 'click', function (event) {
-          console.log(event);
-          addMarker(event.latLng);
+          console.log(event.latLng.lng())
 
           let marker = new google.maps.Marker({
             position: { lat: event.latLng.lat(), lng: event.latLng.lng() },
             map: map,
             title: 'Click to zoom'
           });
-          temp_marker = marker;
+          currentMarker = marker;
 
           markersArray.push(marker);
         });
-        markers = JSON.parse(markers)
-        if (markers) {
-          // loop through markers
-          for (let i = 0; i < markers.length; i++) {
-            markers[i].coords.lat = parseFloat(markers[i].coords.lat)
-            markers[i].coords.lng = parseFloat(markers[i].coords.lng)
-            placeMarker(markers[i]);
+
+
+
+        if (currentPlaces) {
+          // loop through currentPlaces
+          for (let i = 0; i < currentPlaces.length; i++) {
+            currentPlaces[i].lat = parseFloat(currentPlaces[i].lat)
+            currentPlaces[i].lng = parseFloat(currentPlaces[i].lng)
+            placeMarker(currentPlaces[i], map);
           }
         }
       }
-      //make function
-
-      function placeMarker(pointObject) {
+      //add marker function
+      function placeMarker(pointObject, map) {
         let marker = new google.maps.Marker({
-          position: pointObject.coords,
+          position: { lat: parseInt(pointObject.lat), lng: parseInt(pointObject.lng) },
           map: map
         });
-
-        if (pointObject.content) {
+        if (pointObject) {
           var infoWindow = new google.maps.InfoWindow({
-            content: pointObject.content
+            content: pointObject.description
+
           });
           marker.addListener('click', function () {
             infoWindow.open(map, marker);
           });
         }
       }
-
       // Sets the map on all markers in the array.
       function setMapOnAll(map) {
         for (var i = 0; i < markers.length; i++) {
@@ -115,13 +96,12 @@
         clearMarkers();
         markers = [];
       }
-      initMap();
+      initMap(currentMap.lat, currentMap.lng, currentMap.zoom);
+
 
     </script>
 
-    <form>
-      <button type="Capture Map" method="POST" action="/maps/new"></button>
-    </form>
+
 
     <% include ./sidebar %>
 

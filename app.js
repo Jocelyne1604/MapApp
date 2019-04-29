@@ -34,29 +34,66 @@ function validUser(email, password) {
   return validEmail && validPassword;
 }
 
+function search(maps, query_mapid) {
+  let currentPoints = [];
+  for (let i = 0; i < maps.length; i++) {
+    if (maps[i].id === query_mapid) {
+      // console.log(maps[i])
+      return maps[i];
+    }
+  }
+}
+function searchPlaces(places, query_mapid) {
+  let currentPoints = [];
+  for (let i = 0; i < places.length; i++) {
+    if (places[i].map_id === query_mapid) {
+      currentPoints.push(places)
+      return currentPoints;
+    }
+  }
+}
+
+
 //All GET routes here
 app.get("/", (req, res) => {
-  // User.getMaps(function (data) {
-  // })
-  console.log("user email", req.session["user_email"]);
+  let templateVars;
+  let currentMap;
+  let map;
   if (!req.session["user_email"]) {
-    let templateVars = { user: null, maps: [] };
+    let currentMap = { zoom: 10, lat: 43.6532, lng: -79.3832 }
+    let templateVars = {
+      user: null, maps: null, places: null,
+      currentMap: JSON.stringify(currentMap)
+    };
     res.render("index.ejs", templateVars);
   } else {
     User.getOneByEmail(req.session["user_email"]).then(user => {
-      User.getMaps(function(maps) {
-        let templateVars = { user: user, maps: maps };
+      User.getMaps(function (maps) {
+        currentMap = search(maps, Number(req.query.mapid));
+        map = maps
+      })
+      User.getPlaces(function (places) {
+        let currentPlaces = searchPlaces(places, Number(req.query.mapid));
+        // console.log(currentPlaces)
+        templateVars = {
+          user: user, maps: map, currentMap: JSON.stringify(currentMap),
+          currentPlaces: (currentPlaces[0])
+        };
+        // console.log(templateVars.currentPlaces)
         res.render("index.ejs", templateVars);
       });
     });
   }
-});
+})
 
 //peramiter mapId is the users id whom is currently logged in
 //and clicks on the listed map name. should pull overlay of all places corresponding to that map.
 app.get("/users/places", (req, res) => {
-  User.getPlaces(mapId, function(data) {});
-  res.redirect("/");
+  User.getPlaces(mapId, function (data) {
+    let templateVars = { user: user, places: places };
+    res.render("index.ejs", templateVars);
+  })
+  res.redirect('/');
 }),
   app.get("/users/maps", (req, res) => {
     User.getUsersMaps(userId, function(data) {});

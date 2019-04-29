@@ -2,11 +2,45 @@
 <div class="col-4">
   <h3>Welcome</h3>
   <h5>Favorites:</h5>
-  <% for (let index in maps) { %>
-  <a href="/<%= index %>" class="form-inline"></a>
-  <li><strong><a href="/?mapid=<%= maps[index].id %>"><%= index %></a></strong><strong>
-      :</strong> <%= maps[index].name %></a></li>
-  <% }; %>
-  <h5 class="category-list--title">List of points:</h5>
-  <ul class="list-group"></ul>
-</div>
+  <div class="marker-info">
+    <input class="marker-title" type="text" placeholder="Marker title">
+    <textarea class="marker-description" col="50" placeholder="Marker description"></textarea>
+    <input class="picture-url" type="text" placeholder="Please share a url for a picture of this location">
+    <div class="left-list">
+      <div class="current-map-title">
+        <h3>Current Map</h3>
+
+      </div>
+      <div class="map-markers">
+        <h3>Map Markers</h3>
+        <ul class="map-markers-list">
+        </ul>
+      </div>
+      <div class="buttons">
+        <button class="save-button">save</button>
+        <button class="cancel-button">cancel</button>
+      </div>
+      <form>
+        <div class="update-marker">
+          <input name="marker-name" class="update-marker-title" type="text" placeholder="Marker title">
+          <textarea class="update-marker-description" col="50" placeholder="Marker description"></textarea>
+          <input name="marker-url" class="update-picture-url" type="text"
+            placeholder="Please share a url for a picture of this location">
+
+          <div class="buttons">
+            <button class="update-button">update</button>
+            <button class="delete-button">delete</button>
+            <button class="cancel-update-button">cancel</button>
+          </div>
+        </div>
+    </div>
+    </form>
+    <% for (let index in maps) { %>
+    <li><strong><a href="/?mapid=<%= maps[index].id %>"><%= maps[index].name %></a></strong>
+      <% }; %>
+      <% for (let index in currentPlaces) { %>
+    <li><a><%= currentPlaces[index].description %></a></li>
+    <% }; %>
+    <h5 class="category-list--title">List of points:</h5>
+    <ul class="list-group"></ul>
+  </div>
