@@ -38,19 +38,18 @@
           console.log("yyyyy11", currentMap)
           google.maps.event.addListener(map, 'click', function (event) {
             console.log("LAT " + event.latLng.lng(), "LNG " + event.latLng.lat())
-            $('#submitForm').on('click', function (event) {
-              preventDefault()
+            $('.saveMap').on('click', function (event) {
+              event.preventDefault()
               let mapData = JSON.stringify(objectPointer)
               $.ajax({
                 url: '/places/new',
                 method: 'POST',
                 data: mapData,
                 success: function (result) {
-                  console.log("postSuccesful", success)
                 }
               });
             });
-            console.log("yyyyy11", currentMap)
+
             let marker = new google.maps.Marker({
               position: { lat: event.latLng.lat(), lng: event.latLng.lng() },
               map: map,
