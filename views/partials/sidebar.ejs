@@ -1,36 +1,28 @@
    
+</div>
 
-
-  <div class="col-4">
-
-
-     <form>
-      <button id="capture-button" class="btn btn-outline-primary" type="Capture Map" method="POST" action="/maps/new">Capture Map</button>
+<div class="col-4">
+  <div>
+    <form>
+      <button id="capture-button" class="btn btn-outline-primary" type="Capture Map" method="POST" action="/maps/new" class="saveMap">Capture Map</button>
     </form>
-         <form>
-      <button id="capture-button" class="btn btn-outline-primary" type="Capture Map" method="POST" action="/maps/new">Capture Map</button>
-    </form>
-<br>
-
-    <div class="list-group" id="list-tab" role="tablist">
-      <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">First Map</a>
-      <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Second Map</a>
-      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Third map</a>
-      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Fourth map</a>
-    </div>
   </div>
   
-</div>
-<div class="col-4">
-  <h3>Welcome</h3>
-  <h5>Favorites:</h5>
+  <h1>Maps:</h1>
 
+  <div>
     <% for (let index in maps) { %>
-    <li><strong><a href="/?mapid=<%= maps[index].id %>"><%= maps[index].name %></a></strong>
-      <% }; %>
-      <% for (let index in currentPlaces) { %>
-    <li><a><%= currentPlaces[index].description %></a></li>
+      <ul class="list-group-item list-group-item-action active" style="list-style: none;">
+        <li><strong><a class="list-group-item list-group-item-action" href="/?mapid=<%= maps[index].id %>"><%= maps[index].name %></a></strong></li>
+      </ul>
     <% }; %>
-    <h5 class="category-list--title">List of points:</h5>
-    <ul class="list-group"></ul>
-  </div>
+    <h1 class="category-list--title">Points:</h1>
+    <% for (let index in currentPlaces) { %>
+      <ul class="list-group list-group-flush">
+        <li><a class="list-group-item"  href="#list-home" role="tab" aria-controls="home"><%= currentPlaces[index].description %></a></li>
+      </ul>
+    <% }; %>
+    
+ 
+
+

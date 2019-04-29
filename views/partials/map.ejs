@@ -1,14 +1,12 @@
 <div id="main-section">
 <div class="row">
   <div class="col-8">
-    <div id="googleMap" style="width:100%;height:400px;"></div>
+    <div id="googleMap" style="width:100%;height:720px;"></div>
     <div style="visibility:hidden" id="currentMap"><%= currentMap %></div>
     <% if (currentPlaces !== undefined) { %>
     <div style="visibility:hidden" id="currentPlaces"><%= JSON.stringify(currentPlaces) %></div>
     <% } %>
-    <form>
-      <button type="Capture Map" method="POST" action="/maps/new" class="saveMap">HELLO</button>
-    </form>
+
     <script>
 
       var currentMap = JSON.parse($("#currentMap").text())
@@ -120,8 +118,6 @@
     </script>
 
 
-
     <% include ./sidebar %>
 
-  </div>
   </div>

@@ -1,8 +1,8 @@
 /*HEADER*/
 .navbar {
-  -webkit-box-shadow: 0 8px 6px -6px grey;
-  -moz-box-shadow: 0 8px 6px -6px grey;
-  box-shadow: 0 8px 6px -6px grey;
+  -webkit-box-shadow: 0 8px 6px -6px black;
+  -moz-box-shadow: 0 8px 6px -6px black;
+  box-shadow: 0 8px 6px -6px black;
   z-index: 9999;
   position: fixed; /* Set the navbar to fixed position */
   top: 0; /* Position the navbar at the top of the page */
@@ -31,15 +31,12 @@
 
 /*BODY*/
 #main-section {
-  margin-top: 68px;
+  margin-top: 65px;
 }
 
 .sidebar {
   margin-top: 10px;
   padding-left: -20px;
-  z-index: 9999;
-  position: fixed;
-  top: 0;
 }
 
 .list-group-item {
@@ -52,8 +49,20 @@
 
 #staticEmail2 {
   color: white;
+  width: 250px;
 }
 
 #capture-button {
   margin: 20px;
+}
+
+footer {
+  background-color: aliceblue;
+  width: 100%;
+}
+
+h1 {
+  color: white;
+  text-align: right;
+  margin: 10px 10px 10px 0;
 }
