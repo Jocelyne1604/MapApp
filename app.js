@@ -58,15 +58,19 @@ function searchPlaces(places, query_mapid) {
 //All GET routes here
 app.get("/", (req, res) => {
   let templateVars;
-  let currentMap;
+  // let currentMap;
   let map;
+  let currentMap = { zoom: 7, lat: 36.7783, lng: -119.4179 }
   if (!req.session["user_email"]) {
-    let currentMap = { zoom: 10, lat: 43.6532, lng: -79.3832 }
-    let templateVars = {
-      user: null, maps: null, places: null,
-      currentMap: JSON.stringify(currentMap)
-    };
-    res.render("index.ejs", templateVars);
+    // console.log(currentMap)
+    let currentPlaces = null;
+    User.getMaps(function (maps) {
+      let templateVars = {
+        user: null, maps: maps, places: null,
+        currentMap: JSON.stringify(currentMap), currentPlaces: (currentPlaces)
+      };
+      res.render("index.ejs", templateVars);
+    })
   } else {
     User.getOneByEmail(req.session["user_email"]).then(user => {
       User.getMaps(function (maps) {
@@ -75,13 +79,20 @@ app.get("/", (req, res) => {
       })
       User.getPlaces(function (places) {
         let currentPlaces = searchPlaces(places, Number(req.query.mapid));
-        // console.log(currentPlaces)
-        templateVars = {
-          user: user, maps: map, currentMap: JSON.stringify(currentMap),
-          currentPlaces: (currentPlaces[0])
-        };
-        // console.log(templateVars.currentPlaces)
-        res.render("index.ejs", templateVars);
+        if (currentPlaces) {
+          templateVars = {
+            user: user, maps: map, currentMap: JSON.stringify(currentMap),
+            currentPlaces: (currentPlaces[0])
+          }
+          res.render("index.ejs", templateVars);
+        } else {
+          let currentMap = { zoom: 7, lat: 36.7783, lng: -119.4179 }
+          templateVars = {
+            user: user, maps: map, currentMap: JSON.stringify(currentMap), currentPlaces: (currentPlaces)
+          }
+
+          res.render("index.ejs", templateVars);
+        }
       });
     });
   }
