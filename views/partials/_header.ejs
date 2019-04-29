@@ -33,9 +33,8 @@
 <li class="nav-item">
 <form class="form-inline" method="POST" action="<%=`/users`%>">
   <div class="form-group mb-2">
-      <a class="nav-link active"href="#" onClick="unhideReg()">Register</a> 
+      <a id="reg" class="nav-link active"href="#" onClick="unhideReg()">Register</a> 
 </div>
-
   <div class="form-group mx-sm-3 mb-2">
      <label for="register" class="sr-only">email</label>
       <input class="form-control" id="register" type="email" name="email" placeholder="enter email here" style="display:none" />
@@ -49,10 +48,14 @@
 </form>
 </li>
 
+
+
+
+
 <li class="nav-item">
   <form class="form-inline" method="POST" action="<%=`/login`%>">
     <div class="form-group mb-2">
-      <a class="nav-link active" href="#" onClick="unhideLog()">Login</a>
+      <a id="log" class="nav-link active" href="#" onClick="unhideLog()">Login</a>
 </div>
 
 
