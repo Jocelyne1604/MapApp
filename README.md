@@ -1,4 +1,4 @@
-# Mid-Term
+# Mid-Term Project : MAPAPP
 
 !["Homepage"](https://github.com/Cain310/midTermProject/blob/master/homepage.png)
 
