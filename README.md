@@ -1,5 +1,7 @@
 # Mid-Term
 
+!["Homepage"](https://github.com/Cain310/midTermProject/blob/master/homepage.png)
+
 # Goal
 
 - Build a web app from start to finish using the tech and approaches learned to date
